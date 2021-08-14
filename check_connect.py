@@ -53,11 +53,12 @@ def main(db_name,db_user,db_password,db_host,db_port,clear):
     logger.info('Приступаю к созданию таблицы.')
     try:
         conn = get_connect(db_name,db_user,db_password,db_host,db_port)
+        conn.autocommit=True
         logger.info('Получил соединение с БД.')
         cur = conn.cursor()
         logger.info('Получил курсор.')
         cur.execute("CREATE TABLE {} (id int, timest timestamp);".format(db_table))       
-        cur.connection.commit()
+#        cur.connection.commit()
         cur.close()
         conn.close()
         logger.info('Выполнил создание таблицы.')
@@ -81,11 +82,12 @@ def main(db_name,db_user,db_password,db_host,db_port,clear):
             logger.info('{}'.format(counter_row ))
             if not is_connected:
                 conn = get_connect(db_name,db_user,db_password,db_host,db_port)
+                conn.autocommit=True
                 is_connected = True
                 cur = conn.cursor()
                 counter_conn = counter_conn + 1            
             cur.execute("insert into {} (id, timest) values({},'{}');".format(db_table,counter_row,datetime.datetime.now()))
-            cur.connection.commit()
+            #cur.connection.commit()
            # cur.close()
            # conn.close()
         
